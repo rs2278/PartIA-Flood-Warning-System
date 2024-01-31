@@ -16,5 +16,10 @@ def stations_by_distance(stations,p):
     
     return sorted_by_key(new_stations, 2, reverse=False)
 
-
+def stations_within_radius(stations,center,r):
+    stations_within = []
+    for i in range(len(stations)):
+        if haversine(center,stations[i].coord) < r:
+            stations_within.append(stations[i].name)
+    return sorted(stations_within)
 
