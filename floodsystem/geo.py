@@ -23,3 +23,17 @@ def stations_within_radius(stations,center,r):
             stations_within.append(stations[i].name)
     return sorted(stations_within)
 
+def rivers_with_station(stations):
+    for i in range(len(stations)):
+        rivers = set(stations[i].river)
+        rivers = list(rivers)
+    return sorted(rivers)
+
+def stations_by_river(stations):
+    station_by = {}
+    for i in range(len(stations)):
+        if stations[i].river in station_by:
+            station_by[stations[i].river].append(stations[i].name)
+        else:
+         station_by[stations[i].river] = stations[i].name
+    return station_by
