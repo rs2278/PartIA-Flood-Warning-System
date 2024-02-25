@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import dates
 import matplotlib.pyplot as plt 
 from datetime import timedelta
-from floodsystem.datafetcher import fetch_measure_levels
+from datafetcher import fetch_measure_levels
 
 def plot_water_levels(station, dates=None, levels=None, dt=10, dotesting = False):
     dates_self = dates
