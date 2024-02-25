@@ -5,15 +5,12 @@ from datetime import timedelta
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.station import MonitoringStation
 from floodsystem.stationdata import build_station_list, update_water_levels
+from floodsystem.stationdata import update_water_levels
+
 
 def plot_water_levels(station, dates=None, levels=None, dt=10, dotesting = False):
-
-   # Creating lists for dates and levels
     dates_self = dates
     levels_self = levels
-
-    # Fetching dates and levels for specific station    
-    # rough test to see if data is link as expected
     if station.measure_id[0:4] != "http":
         pass
     else:
@@ -45,10 +42,6 @@ def plot_water_levels(station, dates=None, levels=None, dt=10, dotesting = False
         pass
 
 
-#from floodsystem.plot import plot_water_levels
-from floodsystem.stationdata import build_station_list
-from floodsystem.stationdata import update_water_levels
-#from floodsystem.flood import stations_highest_rel_level
 
 def stations_highest_rel_level(stations, N):
     list_relative_water_level=[]
@@ -62,6 +55,8 @@ def stations_highest_rel_level(stations, N):
     sorted_relative_water_level = sorted(list_relative_water_level, key=lambda x: x[1], reverse=True)
     N_highest_relative_water_level = sorted_relative_water_level[:N]
     return N_highest_relative_water_level
+
+
 def run():
     # Initialization of variables that are needed afterwards
     stations = build_station_list()
