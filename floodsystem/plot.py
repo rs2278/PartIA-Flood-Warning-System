@@ -2,18 +2,19 @@ import numpy as np
 from matplotlib import dates
 import matplotlib.pyplot as plt 
 from datetime import timedelta
-from .datafetcher import fetch_measure_levels
-#from .analysis import polyfit
+from . import datafetcher
+from . import analysis
 from .station import MonitoringStation
 
 def plot_water_levels(station, dates=None, levels=None, dt=10, dotesting = False):
     dates_self = dates
     levels_self = levels
+    # Fetching dates and levels for specific station    
+    # rough test to see if data is link as expected
     if station.measure_id[0:4] != "http":
         pass
     else:
-        dates_self, levels_self = fetch_measure_levels(station.measure_id, dt=timedelta(days=dt))
-
+        dates_self, levels_self = datafetcher.fetch_measure_levels(station.measure_id, dt=timedelta(days=dt))
     # Plot
     plt.plot(dates_self, levels_self)
 
@@ -43,17 +44,17 @@ def plot_water_level_with_fit(station, dates1=None, levels=None, p=4, dt=2, dote
     # Creating empty lists for dates and levels
     dates_self = dates1
     levels_self = levels
-
-    # Fetching dates and levels for specific station
+ 
+    
     # rough test to check data is correct
     if station.measure_id[0:4] != "http":
         print('ERROR the measure ID is invalid')
         pass
     else:
-        dates_self, levels_self = fetch_measure_levels(station.measure_id, dt=timedelta(days=dt))
+        dates_self, levels_self = datafetcher.fetch_measure_levels(station.measure_id, dt=timedelta(days=dt))
 
     #use polyfit and get fitted data
-    poly, d0 = polyfit(dates_self, levels_self, p)
+    poly, d0 = analysis.polyfit(dates_self, levels_self, p)
     x = dates.date2num(dates_self)
     y = poly(x - d0)
 
