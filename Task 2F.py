@@ -1,6 +1,28 @@
 import numpy as np
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import numpy as np
+import numpy as np
+from matplotlib import dates
+import matplotlib.pyplot as plt 
+from datetime import timedelta
+from floodsystem.datafetcher import fetch_measure_levels
+from floodsystem.station import MonitoringStation
+from floodsystem.stationdata import build_station_list, update_water_levels
+
+def polyfit(dates1, levels, p):
+    x = dates.date2num(dates1)
+    y = levels
+
+
+    # Find coefficients of best-fit polynomial f(x) of degree p, with a change of base of d0
+    p_coeff = np.polyfit(x - x[0], y, p)
+
+    # Convert coefficient into a polynomial that can be evaluated,
+    poly = np.poly1d(p_coeff)
+
+    return poly, x[0]
+
 
 def plot_water_level_with_fit(station, dates1=None, levels=None, p=4, dt=2, dotesting = False):
     # Creating empty lists for dates and levels
@@ -36,7 +58,7 @@ def plot_water_level_with_fit(station, dates1=None, levels=None, p=4, dt=2, dote
     plt.legend()
 
     # Display plot
-    plt.tight_layout()  # This makes sure plot does not cut off date labels
+    plt.tight_layout()
 
     plt.show()
 
@@ -45,3 +67,22 @@ def plot_water_level_with_fit(station, dates1=None, levels=None, p=4, dt=2, dote
     if dotesting == True:
         return x, y
 
+
+
+def run():
+    # Initialization of variables that are needed afterwards
+    stations = build_station_list()
+    update_water_levels(stations)
+
+    #get the stations you want to plot
+    returned_list = stations_highest_rel_level(stations, 5)
+
+
+#for each of the stations, plot using the created function
+    for i in returned_list:
+        plot_water_level_with_fit(i, p=4, dt=2)
+
+
+if __name__ == "__main__":
+    print("*** Task 2F: CUED Part IA Flood Warning System ***")
+    run()
