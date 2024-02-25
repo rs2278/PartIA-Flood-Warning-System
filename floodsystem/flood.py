@@ -1,4 +1,4 @@
-from station import MonitoringStation
+from .station import MonitoringStation
 
 
 def stations_highest_rel_level(stations, N):
