@@ -34,6 +34,9 @@ def plot_water_levels(station, dates=None, levels=None, dt=10, dotesting = False
 
     plt.show()
 
+
+
+
     #for testing purposes, if dotest = True, return lists of values used in plotting function
     if dotesting == True:
         return dates_self, levels_self

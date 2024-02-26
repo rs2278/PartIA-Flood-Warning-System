@@ -10,7 +10,7 @@ def run():
     update_water_levels(stations)
 
     #get list of stations you want to plot (top 5 highest relative water levels)
-    returned_list = stations_highest_rel_level(stations, 10)
+    returned_list = stations_highest_rel_level(stations, 5)
     #for each list, plot
     for i in returned_list:
         plot_water_levels(i)
