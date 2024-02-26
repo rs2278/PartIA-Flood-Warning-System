@@ -5,11 +5,6 @@
 for manipulating/modifying station data
 
 """
-import numpy as np
-from matplotlib import dates
-import matplotlib.pyplot as plt 
-from datetime import timedelta
-
 
 class MonitoringStation:
     """This class represents a river level monitoring station"""
@@ -33,6 +28,39 @@ class MonitoringStation:
         self.town = town
 
         self.latest_level = None
+
+    def __repr__(self):
+        d = "Station name:     {}\n".format(self.name)
+        d += "   id:            {}\n".format(self.station_id)
+        d += "   measure id:    {}\n".format(self.measure_id)
+        d += "   coordinate:    {}\n".format(self.coord)
+        d += "   town:          {}\n".format(self.town)
+        d += "   river:         {}\n".format(self.river)
+        d += "   typical range: {}".format(self.typical_range)
+        return d
+
+
+
+    def typical_range_consistent(self):
+        # check whether self.typical_range is empty or the first element is higher than the second
+        consistentFlag = True
+        if self.typical_range == None:
+            consistentFlag = False
+        elif self.typical_range[0] > self.typical_range[1]:
+            consistentFlag = False
+        return consistentFlag
+    
+    def latest_level_consistent(self):
+        consistentFlag = True
+        if self.typical_range == None:
+            consistentFlag = False
+        elif self.typical_range[0] > self.typical_range[1]:
+            consistentFlag = False
+        elif self.latest_level == None:
+            consistentFlag = False
+        return consistentFlag
+
+    
     def relative_water_level(self):
 
         # returns the latest water level as a fraction of the typical range
@@ -44,14 +72,36 @@ class MonitoringStation:
             return None
         else:
             fraction = (self.latest_level - self.typical_range[0]) / (self.typical_range[1] - self.typical_range[0])
-        return fraction
+            return fraction
+
+def inconsistent_typical_range_stations(stations):
+
+        # generate a list of station consistent flag for every station
+        consisFlagList = dict()
+        for station in stations:
+            flagNow = MonitoringStation.typical_range_consistent(station)
+            consisFlagList[station.name] = flagNow
+        
+        # returns a list of stations that have inconsistent data
+        inconsistentStations = []
+        for key, value in consisFlagList.items():
+            if value == False:
+                inconsistentStations.append(key)
+
+        return inconsistentStations
     
-    def __repr__(self):
-        d = "Station name:     {}\n".format(self.name)
-        d += "   id:            {}\n".format(self.station_id)
-        d += "   measure id:    {}\n".format(self.measure_id)
-        d += "   coordinate:    {}\n".format(self.coord)
-        d += "   town:          {}\n".format(self.town)
-        d += "   river:         {}\n".format(self.river)
-        d += "   typical range: {}".format(self.typical_range)
-        return d
+def inconsistent_latest_level_stations(stations):
+        consisFlagList = dict()
+        for station in stations:
+            flagNow = MonitoringStation.latest_level_consistent(station)
+            consisFlagList[station.name] = flagNow
+        
+        # returns a list of stations that have inconsistent data
+        inconsistentStations = []
+        for key, value in consisFlagList.items():
+            if value == False:
+                inconsistentStations.append(key)
+
+        return inconsistentStations
+
+    
