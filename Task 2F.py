@@ -18,10 +18,6 @@ def stations_highest_rel_level_return_stations(stations, N):
     stations_sorted = [i[0] for i in sorted_relative_water_level]
     return stations_sorted
 
-
-
-
-
 def run():
     # Initialization of variables that are needed afterwards
     stations = build_station_list()
